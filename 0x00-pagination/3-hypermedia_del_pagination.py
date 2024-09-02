@@ -42,7 +42,6 @@ class Server:
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         """Deletion-resilient hypermedia pagination"""
         indexed_data = self.indexed_dataset()
-        
         assert index is not None and 0 <= index < len(indexed_data)
         data = []
         current_index = index
