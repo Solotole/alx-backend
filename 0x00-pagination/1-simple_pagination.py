@@ -4,6 +4,13 @@ import math
 from typing import List, Tuple
 
 
+def index_range(page: int, page_size: int) -> Tuple:
+    """index pagination"""
+    start: int = (page - 1) * page_size
+    end: int = page * page_size
+    return (start, end)
+
+
 class Server:
     """Server class to paginate a database of popular baby names.
     """
@@ -32,7 +39,7 @@ class Server:
         assert page_size > 0
         try:
             # tuple of pagination
-            index = self.index_range(page, page_size)
+            index = index_range(page, page_size)
             # accessing data from the csv file
             data = self.dataset()
             # accessing data between the tuple indices
@@ -42,10 +49,3 @@ class Server:
             # return empty list if IndexError raised
             return []
         return list(paginated_data)
-
-    def index_range(self, page: int, page_size: int) -> Tuple:
-        """index pagination"""
-        start: int = (page - 1) * page_size
-        end: int = page * page_size
-        # new_tuple = tuple(start, end)
-        return (start, end)
