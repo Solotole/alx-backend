@@ -42,7 +42,7 @@ class Server:
             # return empty list if IndexError raised
             return []
         return list(paginated_data)
-    
+
     def index_range(self, page: int, page_size: int) -> Tuple:
         """index pagination"""
         start: int = (page - 1) * page_size
