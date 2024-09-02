@@ -47,9 +47,8 @@ class Server:
         """index pagination"""
         start: int = (page - 1) * page_size
         end: int = page * page_size
-        # new_tuple = tuple(start, end)
         return (start, end)
-    
+
     def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, Any]:
         """ returns a dictionary containing key-value pairs
             Hypermedia pagination
