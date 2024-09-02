@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import csv
 import math
-from typing import List, Tuple. Dict, Any
+from typing import List, Tuple, Dict, Any
 
 
 class Server:
