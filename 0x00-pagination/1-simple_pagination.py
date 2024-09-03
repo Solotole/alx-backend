@@ -32,20 +32,15 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """getting dataset in the range"""
-        # asserting for type int and positive arguments
-        assert type(page) == int
-        assert type(page_size) == int
-        assert page > 0
-        assert page_size > 0
-        try:
-            # tuple of pagination
-            index = index_range(page, page_size)
-            # accessing data from the csv file
-            data = self.dataset()
-            # accessing data between the tuple indices
-            paginated_data = data[index[0]:index[1]]
-        # incase out of range due to large arguments size
-        except IdexError:
-            # return empty list if IndexError raised
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+
+        total_records = len(self.dataset())
+        total_pages = math.ceil(total_records / page_size)
+
+        # Handle invalid page requests
+        if page > total_pages:
             return []
-        return list(paginated_data)
+
+        start_index, end_index = index_range(page, page_size)
+        return self.dataset()[start_index:end_index]
