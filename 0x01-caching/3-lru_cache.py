@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """LRU Caching replacement policy module"""
-BaseCaching = __import__('base_caching').BaseCaching
 import time
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LRUCache(BaseCaching):
@@ -18,19 +18,19 @@ class LRUCache(BaseCaching):
         """
         if key is None or item is None:
             return
-        
-        # Check if cache is full
+
+        # Checking if cache is full
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # Evict the least recently used item
+            # deleting the least recently used item
             if key not in self.cache_data:
                 # Find the key with the oldest access time
-                lru_key = min(self.key_access_time, key=self.key_access_time.get)
+                lru_key = min(self.key_access_time,
+                              key=self.key_access_time.get)
                 # Remove it from the cache
                 del self.cache_data[lru_key]
                 del self.key_access_time[lru_key]
                 self.access_order.remove(lru_key)
                 print(f"DISCARD: {lru_key}")
-        
         # Add or update the cache with the new key and item
         self.cache_data[key] = item
         self.key_access_time[key] = time.time()
@@ -43,7 +43,7 @@ class LRUCache(BaseCaching):
         """
         if key is None or key not in self.cache_data:
             return None
-        
+
         # Update the access time for the key
         self.key_access_time[key] = time.time()
         # Move the key to the end of the access order list
