@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+    {% if user %}
+        <h1>You are logged in as {{ user['name'] }}</h1>
+        <p>{{ login_message | format(username=user['name']) }}</p>
+    {% else %}
+        <h1>Welcome</h1>
+        <p>{{ not_logged_in_message }}</p>
+    {% endif %}
+</body>
+</html>
