@@ -7,14 +7,17 @@ from typing import List
 
 app = Flask(__name__)
 
+
 class Config:
     """a basic configuring class"""
     LANGUAGES: List = ['en', 'fr']
     BABEL_DEFAULT_LOCALE: str = 'en'
     BABEL_DEFAULT_TIMEZONE: str = 'UTC'
 
+
 app.config.from_object(Config)
 babel = Babel(app)
+
 
 @app.route('/')
 def index():
