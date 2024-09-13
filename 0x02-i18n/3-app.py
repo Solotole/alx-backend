@@ -2,15 +2,16 @@
 """Flask app with i18n support"""
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
+from typing import List
 
 app = Flask(__name__)
 
 
 class Config:
     """A basic configuring class"""
-    LANGUAGES = ['en', 'fr']
-    BABEL_DEFAULT_LOCALE = 'en'
-    BABEL_DEFAULT_TIMEZONE = 'UTC'
+    LANGUAGES: List[str] = ['en', 'fr']
+    BABEL_DEFAULT_LOCALE: str = 'en'
+    BABEL_DEFAULT_TIMEZONE: str = 'UTC'
 
 
 app.config.from_object(Config)
