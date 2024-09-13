@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Welcome</title>
-</head>
-<body>
-    {% if user %}
-        <h1>You are logged in as {{ user['name'] }}</h1>
-        <p>{{ login_message | format(username=user['name']) }}</p>
+  <head>
+    <title>{{ _('home_title') }}</title>
+  </head>
+  <body>
+    <h1>{{ _('home_header') }}</h1>
+    {% if g.user %}
+    <p>{{ _('logged_in_as', username=g.user.name) }}</p>
     {% else %}
-        <h1>Welcome</h1>
-        <p>{{ not_logged_in_message }}</p>
+    <p>{{ _('not_logged_in') }}</p>
     {% endif %}
-</body>
+  </body>
 </html>

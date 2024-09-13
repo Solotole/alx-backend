@@ -1,5 +1,26 @@
 #!/usr/bin/env python3
-from flask import Flask, request, render_template, g
+
+"""
+5. Basic Flask app
+"""
+
+from flask import Flask, render_template, request, g
+from flask_babel import Babel
+
+app = Flask(__name__)
+babel = Babel(app)
+
+
+class Config:
+    """
+    Config class.
+    """
+    LANGUAGES = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE = "en"
+    BABEL_DEFAULT_TIMEZONE = "UTC"
+
+
+app.config.from_object(Config)
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -9,68 +30,42 @@ users = {
 }
 
 
-def get_locale():
+def get_user(login_as):
     """
-    Retrieves the locale from user data,
-    request parameter, or defaults to 'en'.
-    Returns:
-        str: The chosen locale string
+    get_user.
     """
-
-    user = g.get('user')
-    if user and user.get('locale'):
-        return user['locale']
-
-    locale_param = request.args.get('locale')
-    if locale_param and locale_param in SUPPORTED_LOCALES:
-        return SUPPORTED_LOCALES[locale_param]
-
-    return 'en'
-
-
-def get_user():
-    """
-    Retrieves the user dictionary from the
-    login_as parameter, or None if not found.
-    Returns:
-        dict: The user dictionary or None if user not found.
-    """
-
-    login_as = request.args.get('login_as')
-    if login_as and login_as.isdigit():
-        user_id = int(login_as)
-        return users.get(user_id)
-    return None
+    try:
+        return users.get(int(login_as))
+    except Exception:
+        return
 
 
 @app.before_request
 def before_request():
     """
-    Sets the current user based on the login_as parameter before each request.
+    before_request
     """
-    g.user = get_user()
+    g.user = get_user(request.args.get("login_as"))
 
 
-@app.route('/')
-def index():
-    """home render function"""
-    locale = get_locale()
-    login_message = {
-        'en': 'You are logged in as %(username)s.',
-        'fr': 'Vous êtes connecté en tant que %(username)s.',
-    }.get(locale, 'You are logged in as %(username)s.')
-    not_logged_in_message = {
-        'en': 'You are not logged in.',
-        'fr': 'Vous n\'êtes pas connecté.',
-    }.get(locale, 'You are not logged in.')
-
-    user = g.get('user')
-
-    return render_template('5-index.html',
-                           login_message=login_message,
-                           not_logged_in_message=not_logged_in_message,
-                           user=user)
+@babel.localeselector
+def get_locale():
+    """
+    get_locale.
+    """
+    locale = request.args.get("locale")
+    if locale:
+        return locale
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-if __name__ == '__main__':
-    app.run()
+@app.route('/', methods=["GET"], strict_slashes=False)
+def hello():
+    """
+    hello.
+    """
+    return render_template('5-index.html')
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="5000")
